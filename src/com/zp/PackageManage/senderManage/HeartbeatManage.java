@@ -29,6 +29,13 @@ public class HeartbeatManage extends Task {
         this.time = time;
     }
 
+    /**
+     * 心跳包发送线程任务
+     * 获取传入的配置文件里的时间作为休眠时间保证心跳频率
+     * 初始化心跳包
+     * 对邻接表里每个邻接点发送自己的ID以标记自己还活着
+     * 约定心跳包标记位为1
+     */
     @Override
     public void run() {
         while (true){

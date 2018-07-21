@@ -24,6 +24,13 @@ public class UdpReceiverTask extends Task {
         this.port = port;
     }
 
+    /**
+     * UDP接收服务
+     * 配置端口
+     * 初始化数组
+     * 数组解析
+     * 加入已收到数据队列
+     */
     @Override
     public void run() {
         DatagramSocket datagramSocket = null;

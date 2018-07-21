@@ -19,6 +19,10 @@ public class DijkstraManage extends Task {
         this.time = time;
     }
 
+    /**
+     * 迪杰斯特拉线程任务
+     * 用于更新输出迪杰斯特拉信息
+     */
     @Override
     public void run() {
         while (true){
@@ -28,7 +32,7 @@ public class DijkstraManage extends Task {
                 err.printStackTrace();
             }
             if(node.getGraphEdgeLinkedList().size() == 0){
-                System.out.println("当前无任何图信息");
+                System.out.println("孤立节点");
             }else {
                 Graph graph = new Graph();
                 graph.addGraphEdges(node.getGraphEdges());

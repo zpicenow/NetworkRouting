@@ -22,6 +22,12 @@ public class HeartbeatTestManage extends Task {
         this.time = time;
     }
 
+    /**
+     * 心跳包处理线程任务
+     * 当前时间与最后更新时间的差如果大于配置文件中的心跳频率的三倍
+     * 即说明丢包三次，认为丢失
+     * 删除节点处理
+     */
     @Override
     public void run() {
         while (true){
@@ -33,7 +39,7 @@ public class HeartbeatTestManage extends Task {
             LinkedList<NeighNode> neighNodes = node.getNeighNodes();
             for (NeighNode neighNode : neighNodes){
                 if(System.currentTimeMillis() - neighNode.getUpdateTime() > 3*time){
-                    Logger.getGlobal().info("delete " + neighNode.getId());
+                    System.out.println(neighNode.getId() + "   offline");
                     node.deleteLinkNode(neighNode);
                 }
             }

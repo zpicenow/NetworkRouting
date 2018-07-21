@@ -115,7 +115,7 @@ public class Graph {
      * @param table
      */
     private void printfInfo(int[] dist, int[] length, Map<Integer,String> table, int start){
-        System.out.println("节点"+table.get(start)+"到其他节点的最短距离及路径为：");
+        System.out.println("node  "+table.get(start)+"  to others：");
         int end = 0;
         for (int i = 0; i < nodesNumber; i++){
             StringBuilder builder = new StringBuilder();
@@ -125,7 +125,6 @@ public class Graph {
                 int j = i;
                 do{
                     j = dist[j];
-                    builder.append(">-");
                     builder.append(table.get(j));
                 }while(start != j);
                 System.out.println("least-cost path to node "+table.get(end)+": "+builder.reverse().toString() + " and the cost is " + length[i]);

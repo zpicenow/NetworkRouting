@@ -21,9 +21,9 @@ import java.io.ObjectOutputStream;
 public class ObjectAndBytes {
     /**
      * 对象转数组
-     *
-     * @param obj
-     * @return
+     *使用对象输出流转化为流进而转化为byte数组
+     * @param obj 待转化对象
+     * @return byte[]
      */
     public static byte[] toByteArray(ProtocolData obj) {
         byte[] bytes = null;
@@ -43,9 +43,9 @@ public class ObjectAndBytes {
 
     /**
      * 数组转对象
-     *
-     * @param bytes
-     * @return
+     *逆过程
+     * @param bytes byte数组
+     * @return ProtocolData
      */
     public static ProtocolData toObject(byte[] bytes) {
         ProtocolData obj = null;

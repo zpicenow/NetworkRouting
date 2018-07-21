@@ -21,6 +21,13 @@ public class UdpSenderTask extends Task {
         this.udpData = udpData;
     }
 
+    /**
+     * UDP发送服务
+     * 配置主机和端口号
+     * 主机为默认参数
+     * 初始化数组
+     * 对象封装
+     */
     @Override
     public void run() {
         try{
@@ -29,7 +36,7 @@ public class UdpSenderTask extends Task {
                 ProtocolData sendData = udpData.getSendData();
                 byte[] data = ObjectAndBytes.toByteArray(sendData);
                 DatagramPacket packet = new DatagramPacket(data, data.length);
-                packet.setSocketAddress(new InetSocketAddress(sendData.getReceivePort()));
+                packet.setSocketAddress(new InetSocketAddress(sendData.getReceivePort()));  //默认主机地址，只设定端口号
                 socket.send(packet);
             }
         }catch (Exception err){

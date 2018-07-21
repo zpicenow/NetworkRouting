@@ -20,6 +20,10 @@ public class TimedUpdateManage extends Task {
         this.timedUpdateData = timedUpdateData;
     }
 
+    /**
+     * 更新线程任务
+     * 根据收到的更新边表/路径表进行对原表更新，党同伐异
+     */
     @Override
     public void run() {
         node.processTimedUpdate(timedUpdateData);

@@ -13,6 +13,11 @@ import java.io.Serializable;
 /**
  * 协议数据类
  * 规定了udp交换的协议数据的格式
+ * type int 数据类型 约定0为广播包1为心跳包2为更新时间包
+ * time long 更新时间
+ * receivePort int 接收端口号
+ * sendPort int 发送端口号
+ * aPacket Packet 具体包 运行时实例化为子类
  */
 public class ProtocolData implements Serializable {
     private int type;

@@ -19,6 +19,12 @@ public class ReceiverManage extends Task {
         this.receiveProtocol = new ReceiverProtocol(udpData,threadPool,node);
     }
 
+    /**
+     * 类似抽象，概念方法
+     * 接收数据处理线程
+     * 对收到的数据执行对应类型的process方法
+     * 运行时根据调用对象动态向下实例化
+     */
     @Override
     public void run() {
         while (true){

@@ -29,6 +29,13 @@ public class TimedUpdateManage extends Task {
         this.time = time;
     }
 
+    /**
+     * 更新数据包线程任务
+     * 休眠配置文件里的时间
+     * 初始化更新包并分配
+     * 对邻接表里每个邻接节点发送
+     * 约定更新包的标记位为2
+     */
     @Override
     public void run() {
         while (true){

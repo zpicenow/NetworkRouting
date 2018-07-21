@@ -19,6 +19,11 @@ public class HeartbeatManage extends Task {
         this.heartbeatData = heartbeatData;
     }
 
+    /**
+     * 处理心跳包线程任务
+     * 调用处理心跳包函数
+     * 更新节点信息以及更新时间
+     */
     @Override
     public void run() {
         node.setHeartbeatTime(heartbeatData);

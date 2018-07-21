@@ -26,6 +26,9 @@ public class ReceiverProtocol  {
         this.node = node;
     }
 
+    /**
+     * 接收约定类型对应处理
+     */
 
     public void processData() {
         try {

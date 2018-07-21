@@ -27,6 +27,13 @@ public class BroadcastManage extends Task {
         this.node = node;
     }
 
+    /**
+     * 广播包发送线程任务
+     * 初始化
+     * 对邻接表里的每个邻接点发送自己的邻接表
+     * 期望对方根据自己邻接表更新邻接表
+     * 约定广播包标记位为0
+     */
     @Override
     public void run() {
         LinkedList<NeighNode> neighNodes = node.getNeighNodes();

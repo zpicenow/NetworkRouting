@@ -68,6 +68,11 @@ public class RouteNode implements WriteNodeData {
 
     }
 
+    /**
+     * 获取抽象图的边
+     * 依据邻接点集动态更新保证准确性
+     * @return LinkedList<GraphEdge>
+     */
     public LinkedList<GraphEdge> getGraphEdges(){
         LinkedList<GraphEdge> temp = new LinkedList<>();
         synchronized (graphEdgeLock){
@@ -81,6 +86,12 @@ public class RouteNode implements WriteNodeData {
         return temp;
     }
 
+    /**
+     * 移除无效边
+     * 将原本的集合与新接收的集合比较，起终点都不匹配说明已经不存在该条路径，即删去
+     * @param graphEdges 新收到的边集
+     * @return 删改之后的边集
+     */
     private LinkedList<GraphEdge> deleteGraphEdgeById(LinkedList<GraphEdge> graphEdges){
         LinkedList<GraphEdge> temp = new LinkedList<>();
         for (GraphEdge graphEdge:graphEdges){
@@ -101,6 +112,11 @@ public class RouteNode implements WriteNodeData {
         return port;
     }
 
+    /**
+     * 获取邻接点表
+     * 同时动态移除离线的节点
+     * @return 邻接点集合
+     */
     @Override
     public LinkedList<NeighNode> getNeighNodes() {
         LinkedList<NeighNode> temp = new LinkedList<>();
@@ -112,11 +128,22 @@ public class RouteNode implements WriteNodeData {
         return temp;
     }
 
+    /**
+     * 获取边集
+     * @return 边集
+     */
     @Override
     public LinkedList<GraphEdge> getGraphEdgeLinkedList() {
         return getGraphEdges();
     }
 
+    /**
+     * 处理收到的广播包
+     *
+     * @param broadcastPackage  由UDP服务收到并解析出来的广播包
+     * @return false 邻接点已计算过的ID，不处理
+     *          true 邻接点集不包含的ID，添加到邻接点集，添加到路径图集
+     */
     @Override
     public boolean processBroadcast(BroadcastPackage broadcastPackage) {
         synchronized (receiveNodesLock){
@@ -138,6 +165,11 @@ public class RouteNode implements WriteNodeData {
         }
     }
 
+    /**
+     * 处理收到的心跳包
+     * 如果心跳包包含设置在线同时更新时间，以确定是否超时三次
+     * @param heartbeatData 接收到的心跳包
+     */
     @Override
     public void setHeartbeatTime(HeartbeatPackage heartbeatData) {
         for (int i = 0; i < neighNodes.size(); i++){
@@ -149,6 +181,11 @@ public class RouteNode implements WriteNodeData {
         }
     }
 
+    /**
+     * 处理收到的更新包
+     * 调用删改函数，将边集保持最新
+     * @param timedUpdateData 接收的更新包
+     */
     @Override
     public void processTimedUpdate(TimedUpdatePackage timedUpdateData) {
         LinkedList<GraphEdge> temp = deleteGraphEdgeById(timedUpdateData.getGraphEdges());
@@ -157,6 +194,12 @@ public class RouteNode implements WriteNodeData {
         }
     }
 
+    /**
+     * 移除离线节点
+     * 将传入的节点调用offline函数标志下线
+     * 同时移除节点set里存储的信息以及边集中对应节点的路径
+     * @param neighNode 待删除的节点
+     */
     @Override
     public void deleteLinkNode(NeighNode neighNode) {
         neighNodes.get(neighNodes.indexOf(neighNode)).offline();
