@@ -6,7 +6,7 @@
  */
 package com.zp.node;
 
-import com.zp.graph.GraphEdge;
+import com.zp.netView.RouteTable;
 
 import java.util.LinkedList;
 
@@ -18,7 +18,7 @@ public interface ReadNodeData {
 
     LinkedList<NeighNode> getNeighNodes();
 
-    LinkedList<GraphEdge> getGraphEdgeLinkedList();
+    LinkedList<RouteTable> getRouteTableLinkedList();
 
-    LinkedList<GraphEdge> getGraphEdges();
+    LinkedList<RouteTable> getGraphEdges();
 }

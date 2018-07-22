@@ -6,10 +6,10 @@
  */
 package com.zp.node;
 
+import com.zp.netView.RouteTable;
 import com.zp.protocol.data.BroadcastPackage;
 import com.zp.protocol.data.HeartbeatPackage;
 import com.zp.protocol.data.TimedUpdatePackage;
-import com.zp.graph.GraphEdge;
 
 import java.io.*;
 import java.util.LinkedList;
@@ -23,7 +23,7 @@ public class RouteNode implements WriteNodeData {
     private String id;
     private int port;
     private LinkedList<NeighNode> neighNodes;
-    private LinkedList<GraphEdge> graphEdgeLinkedList;
+    private LinkedList<RouteTable> routeTableLinkedList;
     private Set<String> receivedNodes;
     private final Object graphEdgeLock = new Object();
     private final Object receiveNodesLock = new Object();
@@ -31,7 +31,7 @@ public class RouteNode implements WriteNodeData {
     public RouteNode(String id, int port, String configPath) {
         this.id = id;
         this.port = port;
-        this.graphEdgeLinkedList = new LinkedList<>();
+        this.routeTableLinkedList = new LinkedList<>();
         this.neighNodes = new LinkedList<>();
         this.receivedNodes = new TreeSet<>();
         try {
@@ -71,17 +71,17 @@ public class RouteNode implements WriteNodeData {
     /**
      * 获取抽象图的边
      * 依据邻接点集动态更新保证准确性
-     * @return LinkedList<GraphEdge>
+     * @return LinkedList<RouteTable>
      */
-    public LinkedList<GraphEdge> getGraphEdges(){
-        LinkedList<GraphEdge> temp = new LinkedList<>();
+    public LinkedList<RouteTable> getGraphEdges(){
+        LinkedList<RouteTable> temp = new LinkedList<>();
         synchronized (graphEdgeLock){
-            for (GraphEdge graphEdge:graphEdgeLinkedList){
-                temp.addLast(graphEdge);
+            for (RouteTable routeTable : routeTableLinkedList){
+                temp.addLast(routeTable);
             }
         }
         for (NeighNode neighNode : getNeighNodes()){
-            temp.addLast(new GraphEdge(this.id, neighNode.getId(), neighNode.getLength()));
+            temp.addLast(new RouteTable(this.id, neighNode.getId(), neighNode.getLength()));
         }
         return temp;
     }
@@ -89,14 +89,14 @@ public class RouteNode implements WriteNodeData {
     /**
      * 移除无效边
      * 将原本的集合与新接收的集合比较，起终点都不匹配说明已经不存在该条路径，即删去
-     * @param graphEdges 新收到的边集
+     * @param routeTables 新收到的边集
      * @return 删改之后的边集
      */
-    private LinkedList<GraphEdge> deleteGraphEdgeById(LinkedList<GraphEdge> graphEdges){
-        LinkedList<GraphEdge> temp = new LinkedList<>();
-        for (GraphEdge graphEdge:graphEdges){
-            if(!graphEdge.getStart().equals(id) && !graphEdge.getEnd().equals(id)){
-                temp.add(graphEdge);
+    private LinkedList<RouteTable> deleteGraphEdgeById(LinkedList<RouteTable> routeTables){
+        LinkedList<RouteTable> temp = new LinkedList<>();
+        for (RouteTable routeTable : routeTables){
+            if(!routeTable.getStart().equals(id) && !routeTable.getEnd().equals(id)){
+                temp.add(routeTable);
             }
         }
         return temp;
@@ -133,7 +133,7 @@ public class RouteNode implements WriteNodeData {
      * @return 边集
      */
     @Override
-    public LinkedList<GraphEdge> getGraphEdgeLinkedList() {
+    public LinkedList<RouteTable> getRouteTableLinkedList() {
         return getGraphEdges();
     }
 
@@ -154,9 +154,9 @@ public class RouteNode implements WriteNodeData {
                 LinkedList<NeighNode> temp = broadcastPackage.getNeighNodes();
                 synchronized (graphEdgeLock){
                     for (NeighNode neighNode :temp){
-                        GraphEdge graphEdge = new GraphEdge(broadcastPackage.getId(), neighNode.getId(), neighNode.getLength());
-                        if (!graphEdgeLinkedList.contains(graphEdge)){
-                            graphEdgeLinkedList.addLast(graphEdge);
+                        RouteTable routeTable = new RouteTable(broadcastPackage.getId(), neighNode.getId(), neighNode.getLength());
+                        if (!routeTableLinkedList.contains(routeTable)){
+                            routeTableLinkedList.addLast(routeTable);
                         }
                     }
                 }
@@ -188,9 +188,9 @@ public class RouteNode implements WriteNodeData {
      */
     @Override
     public void processTimedUpdate(TimedUpdatePackage timedUpdateData) {
-        LinkedList<GraphEdge> temp = deleteGraphEdgeById(timedUpdateData.getGraphEdges());
+        LinkedList<RouteTable> temp = deleteGraphEdgeById(timedUpdateData.getRouteTables());
         synchronized (graphEdgeLock){
-            graphEdgeLinkedList = temp;
+            routeTableLinkedList = temp;
         }
     }
 
@@ -204,13 +204,13 @@ public class RouteNode implements WriteNodeData {
     public void deleteLinkNode(NeighNode neighNode) {
         neighNodes.get(neighNodes.indexOf(neighNode)).offline();
         synchronized (graphEdgeLock){
-            LinkedList<GraphEdge> toDelete = new LinkedList<>();
-            for (GraphEdge graphEdge:graphEdgeLinkedList){
-                if(graphEdge.getStart().equals(neighNode.getId()) || graphEdge.getEnd().equals(neighNode.getId())){
-                    toDelete.addLast(graphEdge);
+            LinkedList<RouteTable> toDelete = new LinkedList<>();
+            for (RouteTable routeTable : routeTableLinkedList){
+                if(routeTable.getStart().equals(neighNode.getId()) || routeTable.getEnd().equals(neighNode.getId())){
+                    toDelete.addLast(routeTable);
                 }
             }
-            graphEdgeLinkedList.removeAll(toDelete);
+            routeTableLinkedList.removeAll(toDelete);
         }
     }
 }

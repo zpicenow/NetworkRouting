@@ -6,7 +6,7 @@
  */
 package com.zp;
 
-import com.zp.graph.Graph;
+import com.zp.netView.Path;
 import com.zp.node.RouteNode;
 import com.zp.PackageManage.TimedManage.TimedManage;
 import com.zp.PackageManage.receiverManage.ReceiverManage;
@@ -38,9 +38,9 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         while (true){
             if(scanner.nextLine().equals("update")){
-                Graph graph = new Graph();
-                graph.addGraphEdges(routeNode.getGraphEdges());
-                graph.dijkstra(routeNode.getId());
+                Path path = new Path();
+                path.addGraphEdges(routeNode.getGraphEdges());
+                path.dijkstra(routeNode.getId());
             }
         }
     }

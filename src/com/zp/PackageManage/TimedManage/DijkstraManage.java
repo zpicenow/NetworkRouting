@@ -6,7 +6,7 @@
  */
 package com.zp.PackageManage.TimedManage;
 
-import com.zp.graph.Graph;
+import com.zp.netView.Path;
 import com.zp.node.ReadNodeData;
 import com.zp.threadPool.Task;
 
@@ -31,12 +31,12 @@ public class DijkstraManage extends Task {
             }catch (InterruptedException err){
                 err.printStackTrace();
             }
-            if(node.getGraphEdgeLinkedList().size() == 0){
+            if(node.getRouteTableLinkedList().size() == 0){
                 System.out.println("孤立节点");
             }else {
-                Graph graph = new Graph();
-                graph.addGraphEdges(node.getGraphEdges());
-                graph.dijkstra(node.getId());
+                Path path = new Path();
+                path.addGraphEdges(node.getGraphEdges());
+                path.dijkstra(node.getId());
             }
         }
     }

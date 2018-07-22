@@ -6,19 +6,19 @@
  */
 package com.zp.protocol.data;
 
-import com.zp.graph.GraphEdge;
+import com.zp.netView.RouteTable;
 
 import java.io.Serializable;
 import java.util.LinkedList;
 
 public class TimedUpdatePackage extends Package implements Serializable {
-    private LinkedList<GraphEdge> graphEdges;
+    private LinkedList<RouteTable> routeTables;
 
-    public TimedUpdatePackage(LinkedList<GraphEdge> graphEdges){
-        this.graphEdges = graphEdges;
+    public TimedUpdatePackage(LinkedList<RouteTable> routeTables){
+        this.routeTables = routeTables;
     }
 
-    public LinkedList<GraphEdge> getGraphEdges() {
-        return graphEdges;
+    public LinkedList<RouteTable> getRouteTables() {
+        return routeTables;
     }
 }

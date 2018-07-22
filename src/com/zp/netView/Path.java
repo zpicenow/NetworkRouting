@@ -1,10 +1,10 @@
 /*
- * Graph
+ * Path
  *
  * @author ZhaoPeng
  * @date 18-7-20
  */
-package com.zp.graph;
+package com.zp.netView;
 
 import java.util.LinkedList;
 import java.util.Map;
@@ -16,11 +16,11 @@ import java.util.TreeSet;
  * 实现了Dijkstra接口
  * 抽象化表示当前网络的二维图结构，并输出Dijkstra路径
  */
-public class Graph {
+public class Path {
     /**
      * 所有边的集合
      */
-    private final LinkedList<GraphEdge> graphEdges;
+    private final LinkedList<RouteTable> routeTables;
 
     /**
      * 点的数目
@@ -40,18 +40,18 @@ public class Graph {
     /**
      * 构造函数
      */
-    public Graph(){
-        graphEdges = new LinkedList<>();
+    public Path(){
+        routeTables = new LinkedList<>();
     }
 
     /**
      * 添加边
-     * @param graphEdges　边的集合
+     * @param routeTables　边的集合
      */
 
-    public void addGraphEdges(LinkedList<GraphEdge> graphEdges) {
-        for (GraphEdge graphEdge:graphEdges){
-            this.graphEdges.addLast(new GraphEdge(graphEdge.getStart(),graphEdge.getEnd(),graphEdge.getLength()));
+    public void addGraphEdges(LinkedList<RouteTable> routeTables) {
+        for (RouteTable routeTable : routeTables){
+            this.routeTables.addLast(new RouteTable(routeTable.getStart(), routeTable.getEnd(), routeTable.getLength()));
         }
     }
 
@@ -100,7 +100,7 @@ public class Graph {
      */
     private void initMatrix(Map<String,Integer> map){
         matrix = new int[nodesNumber][nodesNumber];
-        for (GraphEdge edge:graphEdges){
+        for (RouteTable edge: routeTables){
             matrix[map.get(edge.getStart())][map.get(edge.getEnd())] = edge.getLength();
             matrix[map.get(edge.getEnd())][map.get(edge.getStart())] = edge.getLength();
         }
@@ -139,7 +139,7 @@ public class Graph {
 
     public void dijkstra(String id) {
         TreeSet<String> treeSet = new TreeSet<>();  //得到所有节点
-        for (GraphEdge edge:graphEdges){
+        for (RouteTable edge: routeTables){
             treeSet.add(edge.getStart());
             treeSet.add(edge.getEnd());
         }
@@ -152,7 +152,7 @@ public class Graph {
             count++;
         }
         matrix = new int[nodesNumber][nodesNumber];     //初始化临接矩阵
-        for (GraphEdge edge:graphEdges){
+        for (RouteTable edge: routeTables){
             matrix[map.get(edge.getStart())][map.get(edge.getEnd())] = edge.getLength();
             matrix[map.get(edge.getEnd())][map.get(edge.getStart())] = edge.getLength();
         }

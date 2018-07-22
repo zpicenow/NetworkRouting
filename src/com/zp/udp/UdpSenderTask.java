@@ -7,7 +7,7 @@
 package com.zp.udp;
 
 import com.zp.protocol.ProtocolData;
-import com.zp.lib.ObjectAndBytes;
+import com.zp.util.ProByteReserve;
 import com.zp.threadPool.Task;
 
 import java.net.DatagramPacket;
@@ -34,7 +34,7 @@ public class UdpSenderTask extends Task {
             DatagramSocket socket = new DatagramSocket();
             while (true){
                 ProtocolData sendData = udpData.getSendData();
-                byte[] data = ObjectAndBytes.toByteArray(sendData);
+                byte[] data = ProByteReserve.toByteArray(sendData);
                 DatagramPacket packet = new DatagramPacket(data, data.length);
                 packet.setSocketAddress(new InetSocketAddress(sendData.getReceivePort()));  //默认主机地址，只设定端口号
                 socket.send(packet);

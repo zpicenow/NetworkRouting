@@ -7,7 +7,7 @@
 package com.zp.udp;
 
 import com.zp.protocol.ProtocolData;
-import com.zp.lib.ObjectAndBytes;
+import com.zp.util.ProByteReserve;
 import com.zp.threadPool.Task;
 
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class UdpReceiverTask extends Task {
                 byte[] data = datagramPacket.getData();
                 byte[] receiveData = new byte[datagramPacket.getLength()];
                 System.arraycopy(buffer, 0, receiveData, 0, receiveData.length);
-                ProtocolData object =(ProtocolData) ObjectAndBytes.toObject(receiveData);
+                ProtocolData object =(ProtocolData) ProByteReserve.toProData(receiveData);
                 udpData.addReceiveData(object);
             }
         }catch (SocketException err){

@@ -1,10 +1,10 @@
 /*
- * GraphEdge
+ * RouteTable
  *
  * @author ZhaoPeng
  * @date 18-7-20
  */
-package com.zp.graph;
+package com.zp.netView;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
  * 图的边类
  * 实现了序列化接口
  */
-public class GraphEdge implements Serializable {
+public class RouteTable implements Serializable {
     /**
      * 起点
      */
@@ -32,7 +32,7 @@ public class GraphEdge implements Serializable {
      * @param end　边的终点
      * @param length　边的长度
      */
-    public GraphEdge(String start, String end, int length) {
+    public RouteTable(String start, String end, int length) {
         this.start = start;
         this.end = end;
         this.length = length;
@@ -72,9 +72,9 @@ public class GraphEdge implements Serializable {
         if (obj == null) {
             return false;
         }
-        if (obj.getClass() == GraphEdge.class) {
-            if(((GraphEdge) obj).getLength() == this.getLength()){
-                return (((GraphEdge) obj).getStart().equals(this.start) && ((GraphEdge) obj).getEnd().equals(this.end)) || (((GraphEdge) obj).getStart().equals(this.end) && ((GraphEdge) obj).getEnd().equals(this.start));
+        if (obj.getClass() == RouteTable.class) {
+            if(((RouteTable) obj).getLength() == this.getLength()){
+                return (((RouteTable) obj).getStart().equals(this.start) && ((RouteTable) obj).getEnd().equals(this.end)) || (((RouteTable) obj).getStart().equals(this.end) && ((RouteTable) obj).getEnd().equals(this.start));
             }else {
                 return false;
             }
